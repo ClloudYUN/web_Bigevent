@@ -1,13 +1,11 @@
-// 配置请求根路径
-axios.defaults.baseURL = 'http://www.liulongbin.top:3008'
-
-// 添加请求拦截器
-axios.interceptors.request.use(function(config) {
-    // 在发送请求之前做些什么
-    config.headers.Authorization = localStorage.getItem('token')
-
-    return config;
-}, function(error) {
-    // 对请求错误做些什么
-    return Promise.reject(error);
+$.ajaxPrefilter(function(options) {
+    // 在发起真正的 Ajax 请求之前，统一拼接请求的根路径
+    // options.url = 'http://ajax.frontend.itheima.net' + options.url
+    options.url = 'http://www.liulongbin.top:3007' + options.url
+        // 统一为有权限的接口，设置 headers 请求头
+    if (options.url.indexOf('/my/') !== -1) {
+        options.headers = {
+            Authorization: localStorage.getItem('token') || ''
+        }
+    }
 })
